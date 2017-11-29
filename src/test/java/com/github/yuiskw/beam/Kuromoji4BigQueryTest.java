@@ -22,6 +22,7 @@ public class Kuromoji4BigQueryTest {
   @Test
   public void testGetOptions() {
     String[] args = {
+        "--project=test-project-id",
         "--schema=id:integer,name:string",
         "--inputDataset=input_dataset",
         "--inputTable=input_table",
@@ -32,6 +33,7 @@ public class Kuromoji4BigQueryTest {
         "--kuromojiMode=SEARCH",
     };
     Kuromoji4BigQuery.Optoins options = Kuromoji4BigQuery.getOptions(args);
+    assertEquals("test-project-id", options.getProject());
     assertEquals("input_dataset", options.getInputDataset());
     assertEquals("input_table", options.getInputTable());
     assertEquals("output_dataset", options.getOutputDataset());
