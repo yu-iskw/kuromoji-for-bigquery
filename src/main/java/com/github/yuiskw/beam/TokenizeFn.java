@@ -54,6 +54,9 @@ public class TokenizeFn extends DoFn<TableRow, TableRow> {
     }
   }
 
+  /**
+   * Convert a TableRow tokenizing sentence(s).
+   */
   public TableRow convert(TableRow row) {
     TableRow outputRow = new TableRow();
 
@@ -67,10 +70,16 @@ public class TokenizeFn extends DoFn<TableRow, TableRow> {
     List<Token> tokens = tokenizerSingleton.tokenize(row.get(this.tokenizedColumn).toString());
     List<TableRow> surfaceFormList = new ArrayList();
     for (Token token : tokens) {
-      TableRow nestedRow = new TableRow()
-          .set("token", token.getSurfaceForm())
-          .set("part_of_speech", token.getPartOfSpeech());
-      token.getPartOfSpeech();
+      TableRow nestedRow = new TableRow();
+      if (token.getSurfaceForm() != null) {
+          nestedRow.set(Kuromoji4BigQuery.COLUMN_SURFACE_FORM, token.getSurfaceForm());
+      }
+      if (token.getPartOfSpeech() != null) {
+        nestedRow.set(Kuromoji4BigQuery.COLUMN_PART_OF_SPEECH, token.getPartOfSpeech());
+      }
+      if (token.getBaseForm() != null) {
+        nestedRow.set(Kuromoji4BigQuery.COLUMN_BASE_FORM, token.getBaseForm());
+      }
       surfaceFormList.add(nestedRow);
     }
     outputRow.put(this.outputColumn, surfaceFormList);
@@ -83,20 +92,9 @@ public class TokenizeFn extends DoFn<TableRow, TableRow> {
    */
   private Tokenizer getOrCreateTokenizer() {
     if (tokenizer == null) {
-      this.tokenizer = Tokenizer.builder().mode(getKuromojiMode(kuromojiMode)).build();
+      Tokenizer.Mode mode = Tokenizer.Mode.valueOf(kuromojiMode.toUpperCase());
+      this.tokenizer = Tokenizer.builder().mode(mode).build();
     }
     return tokenizer;
-  }
-
-  private static Tokenizer.Mode getKuromojiMode(String mode) {
-    if (mode.toUpperCase() == "SEARCH") {
-      return Tokenizer.Mode.SEARCH;
-    }
-    else if (mode.toUpperCase() == "EXTENDED") {
-      return Tokenizer.Mode.EXTENDED;
-    }
-    else {
-      return Tokenizer.Mode.NORMAL;
-    }
   }
 }

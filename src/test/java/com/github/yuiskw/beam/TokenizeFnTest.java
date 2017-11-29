@@ -29,7 +29,7 @@ public class TokenizeFnTest {
 
   @Test
   public void testConvert() {
-    LinkedHashMap<String, String> shemaMap = KuromojiBeam.parseSchema("id:integer");
+    LinkedHashMap<String, String> shemaMap = Kuromoji4BigQuery.parseSchema("id:integer");
     String tokenizedColumn = "text";
     String outputColumn = "output_tokens";
     String kuromojiMode = "NORMAL";

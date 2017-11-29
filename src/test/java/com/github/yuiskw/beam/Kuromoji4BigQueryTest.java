@@ -14,7 +14,7 @@ import com.google.api.services.bigquery.model.TableFieldSchema;
 import com.google.api.services.bigquery.model.TableSchema;
 import org.apache.beam.sdk.testing.TestPipeline;
 
-public class KuromojiBeamTest {
+public class Kuromoji4BigQueryTest {
 
   @Rule
   public final transient TestPipeline pipeline = TestPipeline.create();
@@ -31,7 +31,7 @@ public class KuromojiBeamTest {
         "--outputColumn=output_tokens",
         "--kuromojiMode=SEARCH",
     };
-    KuromojiBeam.Optoins options = KuromojiBeam.getOptions(args);
+    Kuromoji4BigQuery.Optoins options = Kuromoji4BigQuery.getOptions(args);
     assertEquals("input_dataset", options.getInputDataset());
     assertEquals("input_table", options.getInputTable());
     assertEquals("output_dataset", options.getOutputDataset());
@@ -46,13 +46,13 @@ public class KuromojiBeamTest {
   public void testParseSchema() {
     String schemaString = "id:integer,name:string,height:float";
     LinkedHashMap<String, String> schemaMap =
-        KuromojiBeam.parseSchema(schemaString);
+        Kuromoji4BigQuery.parseSchema(schemaString);
     assertEquals(3, schemaMap.size());
     assertEquals("integer", schemaMap.get("id"));
     assertEquals("string", schemaMap.get("name"));
     assertEquals("float", schemaMap.get("height"));
 
-    TableSchema schema = KuromojiBeam.convertToTableSchema(schemaMap, "tokens");
+    TableSchema schema = Kuromoji4BigQuery.convertToTableSchema(schemaMap, "token");
     List<TableFieldSchema> fields = schema.getFields();
     assertEquals(4, fields.size());
     assertEquals("id", fields.get(0).getName());
@@ -61,9 +61,9 @@ public class KuromojiBeamTest {
     assertEquals("STRING", fields.get(1).getType());
     assertEquals("height", fields.get(2).getName());
     assertEquals("FLOAT", fields.get(2).getType());
-    assertEquals("tokens", fields.get(3).getName());
+    assertEquals("token", fields.get(3).getName());
     assertEquals("RECORD", fields.get(3).getType());
-    assertEquals("token", fields.get(3).getFields().get(0).getName());
+    assertEquals("surface_form", fields.get(3).getFields().get(0).getName());
     assertEquals("STRING", fields.get(3).getFields().get(0).getType());
   }
 
@@ -71,7 +71,7 @@ public class KuromojiBeamTest {
   public void testParseSchemaWithSpaces() {
     String parentPaths = "id:integer, name: string,   height :float";
     LinkedHashMap<String, String> parents =
-        KuromojiBeam.parseSchema(parentPaths);
+        Kuromoji4BigQuery.parseSchema(parentPaths);
     assertEquals(3, parents.size());
     assertEquals("integer", parents.get("id"));
     assertEquals("string", parents.get("name"));
@@ -106,11 +106,11 @@ public class KuromojiBeamTest {
         "--outputDataset=test_yu",
         "--outputTable=test_kuromoji_beam_output",
         "--tokenizedColumn=text",
-        "--outputColumn=output_tokens",
-        "--kuromojiMode=SEARCH",
+        "--outputColumn=token",
+        "--kuromojiMode=NORMAL",
         "--tempLocation=gs://test_yu/test-log/",
         "--gcpTempLocation=gs://test_yu/test-log/"
     };
-    KuromojiBeam.main(args);
+    Kuromoji4BigQuery.main(args);
   }
 }

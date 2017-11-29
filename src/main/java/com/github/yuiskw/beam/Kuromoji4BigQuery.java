@@ -23,7 +23,11 @@ import org.apache.beam.sdk.transforms.ParDo;
 /**
  * This class is used for a Dataflow job which write parsed Laplace logs to BigQuery.
  */
-public class KuromojiBeam {
+public class Kuromoji4BigQuery {
+
+  public static String COLUMN_SURFACE_FORM = "surface_form";
+  public static String COLUMN_PART_OF_SPEECH = "part_of_speech";
+  public static String COLUMN_BASE_FORM = "base_form";
 
   /**
    * command line options interface
@@ -49,6 +53,17 @@ public class KuromojiBeam {
     String getOutputTable();
     void setOutputTable(String outputTable);
 
+    @Description("Output BigQuery table create disposition (CREATE_NEVER or CREATE_IF_NEEDED)")
+    @Default.String("CREATE_IF_NEEDED")
+    String getCreateDisposition();
+    void setCreateDisposition(String createDisposition);
+
+    @Description("Output BigQuery table write disposition" +
+        " (WRITE_TRUNCATE, WRITE_APPEND or WRITE_EMPTY)")
+    @Default.String("WRITE_TRUNCATE")
+    String getWriteDisposition();
+    void setWriteDisposition(String writeDisposition);
+
     @Description("column that we want to tokenize")
     @Validation.Required
     String getTokenizedColumn();
@@ -60,9 +75,9 @@ public class KuromojiBeam {
     void setSchema(String schema);
 
     @Description("Output column name")
-    @Default.String("tokens")
+    @Default.String("token")
     String getOutputColumn();
-    void setOutputColumn(String tokenizedColumn);
+    void setOutputColumn(String outputColumn);
 
     @Description("Kuromoji mode (any of NORMAL, SEARCH and EXTENDED)")
     @Default.String("NORMAL")
@@ -80,9 +95,11 @@ public class KuromojiBeam {
     String inputTableId = options.getInputTable();
     String outputDatasetId = options.getOutputDataset();
     String outputTableId = options.getOutputTable();
+    String createDisposition = options.getCreateDisposition().toUpperCase();
+    String writeDisposition = options.getWriteDisposition().toUpperCase();
     String tokenizedColumn = options.getTokenizedColumn();
     String outputColumn = options.getOutputColumn();
-    String kuromojiMode = options.getKuromojiMode();
+    String kuromojiMode = options.getKuromojiMode().toUpperCase();
 
     // Make a output schema
     LinkedHashMap<String, String> schemaMap = parseSchema(options.getSchema());
@@ -103,8 +120,8 @@ public class KuromojiBeam {
     BigQueryIO.Write<TableRow> writer = BigQueryIO.writeTableRows()
         .withSchema(schema)
         .to(outputTableRef)
-        .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_IF_NEEDED)
-        .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_TRUNCATE);
+        .withCreateDisposition(BigQueryIO.Write.CreateDisposition.valueOf(createDisposition))
+        .withWriteDisposition(BigQueryIO.Write.WriteDisposition.valueOf(writeDisposition));
 
     // Build and run pipeline
     Pipeline pipeline = Pipeline.create(options);
@@ -154,7 +171,7 @@ public class KuromojiBeam {
   public static TableSchema convertToTableSchema(
       LinkedHashMap<String, String> schemaMap, String outputTokenizedColumn) {
     if (schemaMap == null) {
-      // TODO error handling
+      throw new IllegalArgumentException("schemaMap is null.");
     }
 
     List<TableFieldSchema> fields = new ArrayList<>();
@@ -173,7 +190,7 @@ public class KuromojiBeam {
       } else if (datatype.equals("timestamp")) {
         fields.add(new TableFieldSchema().setName(column).setType("TIMESTAMP"));
       } else {
-        // TODO error handling
+        throw new IllegalArgumentException(datatype + "is invalid or is not supported.");
       }
     }
 
@@ -185,8 +202,9 @@ public class KuromojiBeam {
         .setFields(
             new ArrayList<TableFieldSchema>() {
               {
-                add(new TableFieldSchema().setName("token").setType("STRING"));
-                add(new TableFieldSchema().setName("part_of_speech").setType("STRING"));
+                add(new TableFieldSchema().setName(COLUMN_SURFACE_FORM).setType("STRING"));
+                add(new TableFieldSchema().setName(COLUMN_PART_OF_SPEECH).setType("STRING"));
+                add(new TableFieldSchema().setName(COLUMN_BASE_FORM).setType("STRING"));
               }
             }
         );

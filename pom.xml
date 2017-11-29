@@ -21,8 +21,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.github.yuiskw</groupId>
-  <artifactId>kuromoji-beam</artifactId>
-  <version>0.1-alpha</version>
+  <artifactId>kuromoji-for-bigquery</artifactId>
+  <version>0.1</version>
 
   <packaging>jar</packaging>
 
