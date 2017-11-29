@@ -21,8 +21,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.github.yuiskw</groupId>
-  <artifactId>bigquery-to-datastore</artifactId>
-  <version>0.2</version>
+  <artifactId>kuromoji-beam</artifactId>
+  <version>0.1-alpha</version>
 
   <packaging>jar</packaging>
 
