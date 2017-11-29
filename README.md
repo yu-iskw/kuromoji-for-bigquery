@@ -1,5 +1,7 @@
 # kuromoji-for-bigquery
 
+[![Build Status](https://travis-ci.org/yu-iskw/kuromoji-for-bigquery.svg?branch=master)](https://travis-ci.org/yu-iskw/kuromoji-for-bigquery)
+
 `kuromoji-for-bigquery` tokenizes text on a BigQuery table with kuromoji and apache beam.
 And then the tokenized result will be stored into another BigQuery table.
 
