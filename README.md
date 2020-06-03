@@ -17,7 +17,7 @@ It is horizontally-scalable on top of distributed system, since apache beam can 
 
 ## Version Info
 
-- Apache Beam: 2.1.0
+- Apache Beam: 2.20.0
 - Kuromoji: 0.7.7
 
 ## How to Use
