@@ -1,10 +1,11 @@
+dist: trusty
 language: java
 sudo: false # faster builds
 
 jdk:
   - oraclejdk8
   - oraclejdk9
-  - openjdk7
+  - oraclejdk11
   - openjdk8
 
 script:
