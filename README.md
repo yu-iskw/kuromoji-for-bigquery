@@ -54,7 +54,7 @@ It is horizontally-scalable on top of distributed system, since apache beam can 
 mvn clean package
 
 # Run bigquery-to-datastore via the compiled JAR file
-java -cp $(pwd)/target/kuromoji-for-bigquery-bundled-0.1.jar \
+java -cp $(pwd)/target/kuromoji-for-bigquery-bundled-0.2.0.jar \
   com.github.yuiskw.beam.Kuromoji4BigQuery \
   --project=test-project-id
   --schema=id:integer
