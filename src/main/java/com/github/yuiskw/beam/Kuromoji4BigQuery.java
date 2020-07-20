@@ -110,7 +110,10 @@ public class Kuromoji4BigQuery {
         .setProjectId(projectId)
         .setDatasetId(inputDatasetId)
         .setTableId(inputTableId);
-    BigQueryIO.Read reader = BigQueryIO.read().from(inputTableRef);
+    BigQueryIO.TypedRead<TableRow> reader = BigQueryIO.readTableRows()
+        .withMethod(BigQueryIO.TypedRead.Method.DIRECT_READ)  // to use the BigQuery Storage API
+        .withSelectedFields(getSelectedFields(schemaMap, tokenizedColumn))
+        .from(inputTableRef);
 
     // Output
     TableReference outputTableRef = new TableReference()
@@ -213,5 +216,30 @@ public class Kuromoji4BigQuery {
     // Make a table schema
     TableSchema schema = new TableSchema().setFields(fields);
     return schema;
+  }
+
+  /**
+   * Get selected fields
+   *
+   * @param schemaMap a map of BigQuery table schema
+   * @param tokenizedColumn column to be tokenized
+   * @return A list of selected fields
+   */
+  public static List<String> getSelectedFields(
+      LinkedHashMap<String, String> schemaMap,
+      String tokenizedColumn) {
+    ArrayList<String> columns = new ArrayList<String>();
+
+    // Extract columns names from the schema.
+    String[] columnsInSchema = schemaMap.keySet().toArray(new String[schemaMap.keySet().size()]);
+    for (String c: columnsInSchema) {
+      columns.add(c);
+    }
+
+    // Append the tokenized column, if it doesn't exist in the schema
+    if (! columns.contains(tokenizedColumn)) {
+      columns.add(tokenizedColumn);
+    }
+    return columns;
   }
 }

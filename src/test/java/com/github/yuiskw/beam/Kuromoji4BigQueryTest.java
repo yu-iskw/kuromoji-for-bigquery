@@ -3,10 +3,10 @@
  */
 package com.github.yuiskw.beam;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
@@ -78,6 +78,28 @@ public class Kuromoji4BigQueryTest {
     assertEquals("integer", parents.get("id"));
     assertEquals("string", parents.get("name"));
     assertEquals("float", parents.get("height"));
+  }
+
+  @Test
+  public void testGetSelectedFields1() {
+    String tokenizedColumn = "text";
+    LinkedHashMap<String, String> schemaMap = new LinkedHashMap<String, String>();
+    schemaMap.put("x", "interger");
+    schemaMap.put("y", "string");
+    List<String> selectedFields = Kuromoji4BigQuery.getSelectedFields(schemaMap, tokenizedColumn);
+    List<String> expected = Arrays.asList("x", "y", "text");
+    assertEquals(selectedFields, expected);
+  }
+
+  @Test
+  public void testGetSelectedFields2() {
+    String tokenizedColumn = "text";
+    LinkedHashMap<String, String> schemaMap = new LinkedHashMap<String, String>();
+    schemaMap.put("x", "interger");
+    schemaMap.put("text", "string");
+    List<String> selectedFields = Kuromoji4BigQuery.getSelectedFields(schemaMap, tokenizedColumn);
+    List<String> expected = Arrays.asList("x", "text");
+    assertEquals(selectedFields, expected);
   }
 
 
