@@ -54,28 +54,27 @@ It is horizontally-scalable on top of distributed system, since apache beam can 
 mvn clean package
 
 # Run bigquery-to-datastore via the compiled JAR file
-java -cp $(pwd)/target/kuromoji-for-bigquery-bundled-0.2.1.jar \
-  com.github.yuiskw.beam.Kuromoji4BigQuery \
-  --project=test-project-id
-  --schema=id:integer
-  --inputDataset=test_input_dataset
-  --inputTable=test_input_table
-  --outputDataset=test_output_dataset
-  --outputTable=test_output_table
-  --tokenizedColumn=text
-  --outputColumn=token
-  --kuromojiMode=NORMAL
-  --tempLocation=gs://test_yu/test-log/
-  --gcpTempLocation=gs://test_yu/test-log/
+java -jar $(pwd)/target/kuromoji-for-bigquery-bundled-0.2.2.jar \
+  --project=test-project-id \
+  --schema=id:integer \
+  --inputDataset=test_input_dataset \
+  --inputTable=test_input_table \
+  --outputDataset=test_output_dataset \
+  --outputTable=test_output_table \
+  --tokenizedColumn=text \
+  --outputColumn=token \
+  --kuromojiMode=NORMAL \
+  --tempLocation=gs://test_yu/test-log/ \
+  --gcpTempLocation=gs://test_yu/test-log/ \
   --maxNumWorkers=10 \
   --workerMachineType=n1-standard-2
 ```
 
 ## Versions
-|kuromoji-for-bigquery|Apache Beam|kuromoji|
-|---------------------|-----------|--------|
-|0.1.0                |2.1.0      |0.7.7   |
-|0.2.x                |2.20.0     |0.7.7   |
+| kuromoji-for-bigquery | Apache Beam | kuromoji |
+| --------------------- | ----------- | -------- |
+| 0.1.0                 | 2.1.0       | 0.7.7    |
+| 0.2.x                 | 2.20.0      | 0.7.7    |
 
 ## License
 
