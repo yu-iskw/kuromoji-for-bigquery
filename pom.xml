@@ -61,7 +61,7 @@
 
     <repository>
       <id>Atilika Open Source repository</id>
-      <url>http://www.atilika.org/nexus/content/repositories/atilika</url>
+      <url>https://www.atilika.org/nexus/content/repositories/atilika</url>
     </repository>
   </repositories>
 
