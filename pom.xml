@@ -42,7 +42,7 @@
     <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
     <maven-shade-plugin.version>3.0.0</maven-shade-plugin.version>
     <pubsub.version>v1-rev20220207-1.32.1</pubsub.version>
-    <slf4j.version>1.7.14</slf4j.version>
+    <slf4j.version>1.7.32</slf4j.version>
     <spark.version>1.6.3</spark.version>
     <surefire-plugin.version>2.20</surefire-plugin.version>
   </properties>
