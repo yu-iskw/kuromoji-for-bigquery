@@ -17,7 +17,7 @@ It is horizontally-scalable on top of distributed system, since apache beam can 
 
 ## Version Info
 
-- Apache Beam: 2.20.0
+- Apache Beam: 2.34.0
 - Kuromoji: 0.7.7
 
 ## How to Use
@@ -75,6 +75,7 @@ java -jar $(pwd)/target/kuromoji-for-bigquery-bundled-0.2.2.jar \
 | --------------------- | ----------- | -------- |
 | 0.1.0                 | 2.1.0       | 0.7.7    |
 | 0.2.x                 | 2.20.0      | 0.7.7    |
+| 0.3.x                 | 2.34.0      | 0.7.7    |
 
 ## License
 
