@@ -361,8 +361,8 @@
       <groupId>org.atilika.kuromoji</groupId>
       <artifactId>kuromoji</artifactId>
       <version>0.7.7</version>
-      <type>jar</type>
-      <scope>compile</scope>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/lib/kuromoji-0.7.7.jar</systemPath>
     </dependency>
 
   </dependencies>
