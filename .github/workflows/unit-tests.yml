@@ -1,0 +1,38 @@
+name: Unit testing
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - java_distribution: "zulu"
+            java_version: "8"
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "${{ matrix.java_distribution }}"
+          java-version: "${{ matrix.java_version }}"
+          cache: 'maven'
+      - name: checkstyle
+        run: |
+          mvn checkstyle:checkstyle
+      - name: test compile
+        run: |
+          mvn compile
+      - name: Run unit tests
+        run: |
+          mvn test
+
