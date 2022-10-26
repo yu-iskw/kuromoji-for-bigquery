@@ -14,7 +14,7 @@ jobs:
       matrix:
         include:
           - java_distribution: "zulu"
-            java_version: "8"
+            java_version: "11"
     defaults:
       run:
         shell: bash
