@@ -22,7 +22,7 @@
 
   <groupId>com.github.yuiskw</groupId>
   <artifactId>kuromoji-for-bigquery</artifactId>
-  <version>0.4.0</version>
+  <version>0.4.1</version>
 
   <packaging>jar</packaging>
 
@@ -361,8 +361,8 @@
       <groupId>org.atilika.kuromoji</groupId>
       <artifactId>kuromoji</artifactId>
       <version>0.7.7</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/lib/kuromoji-0.7.7.jar</systemPath>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
 
   </dependencies>
